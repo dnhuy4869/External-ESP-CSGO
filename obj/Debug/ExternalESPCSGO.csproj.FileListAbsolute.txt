@@ -1,0 +1,11 @@
+C:\Users\PC\Desktop\ExternalESPCSGO\bin\Debug\ExternalESPCSGO.exe.config
+C:\Users\PC\Desktop\ExternalESPCSGO\bin\Debug\ExternalESPCSGO.exe
+C:\Users\PC\Desktop\ExternalESPCSGO\bin\Debug\ExternalESPCSGO.pdb
+C:\Users\PC\Desktop\ExternalESPCSGO\bin\Debug\SharpDX.Direct2D1.xml
+C:\Users\PC\Desktop\ExternalESPCSGO\bin\Debug\SharpDX.DXGI.xml
+C:\Users\PC\Desktop\ExternalESPCSGO\obj\Debug\ExternalESPCSGO.csprojAssemblyReference.cache
+C:\Users\PC\Desktop\ExternalESPCSGO\obj\Debug\ExternalESPCSGO.csproj.CoreCompileInputs.cache
+C:\Users\PC\Desktop\ExternalESPCSGO\obj\Debug\ExternalESPCSGO.csproj.Fody.CopyLocal.cache
+C:\Users\PC\Desktop\ExternalESPCSGO\obj\Debug\ExternalESPCSGO.csproj.CopyComplete
+C:\Users\PC\Desktop\ExternalESPCSGO\obj\Debug\ExternalESPCSGO.exe
+C:\Users\PC\Desktop\ExternalESPCSGO\obj\Debug\ExternalESPCSGO.pdb
