@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace ExternalESPCSGO
 {
-	class Program
+	public static class BaseAddress
 	{
-		static void Main(string[] args)
-		{
-			new Main().Start();
-		}
+		public static int client;
+		public static int engine;
+	}
+
+	public static class Offsets
+	{
 	}
 }

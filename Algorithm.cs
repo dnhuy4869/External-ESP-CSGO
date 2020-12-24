@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ExternalESPCSGO
 {
-	class Program
+	public static class Algorithm
 	{
-		static void Main(string[] args)
+		public static void WorldToScreen()
 		{
-			new Main().Start();
+
 		}
 	}
 }

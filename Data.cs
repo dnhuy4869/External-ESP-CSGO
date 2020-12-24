@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExternalESPCSGO
 {
-	class Program
+	public class Data
 	{
-		static void Main(string[] args)
-		{
-			new Main().Start();
-		}
 	}
 }
