@@ -18,12 +18,13 @@ namespace ExternalESPCSGO
 		#endregion
 
 		IntPtr hWnd = IntPtr.Zero;
-		POINT point;
-		RECT rect;
-		OverlayWindow overlayWindow;
-		Graphics graphics;
-		Memory memory;
-		Data data;
+		POINT point = default;
+		RECT rect = default;
+		OverlayWindow overlayWindow = default;
+		Graphics graphics = default;
+		Memory memory = default;
+		Data data = default;
+		Thread espThread = null;
 
 		public void Start()
 		{
@@ -61,10 +62,9 @@ namespace ExternalESPCSGO
 					data = new Data();
 
 					(new Thread(QueryData) { IsBackground = true }).Start();
-					(new Thread(Esp) { IsBackground = true }).Start();
 
 					Console.Clear();
-					Console.WriteLine("Injected Sucessfully");
+					Console.WriteLine("Injected sucessfully");
 
 					while (true)
 					{
@@ -80,12 +80,50 @@ namespace ExternalESPCSGO
 			new ManualResetEvent(false).WaitOne();
 		}
 
+		int myTeamId = 0;
+		int localPlayer = 0;
+		int clientState = 0;
+		int entityCount = 0;
+		int entityObject = 0;
+
 		private void QueryData()
 		{
 			memory.GetBaseAddress(moduleName1, moduleName2);
 
 			while (true)
 			{
+				localPlayer = memory.ReadMemory<int>(BaseAddress.client + Offsets.dwLocalPlayer);
+				myTeamId = memory.ReadMemory<int>(localPlayer + Offsets.m_iTeamNum);
+				clientState = memory.ReadMemory<int>(BaseAddress.engine + Offsets.dwClientState);
+				entityCount = memory.ReadMemory<int>(clientState + Offsets.dwClientState_MaxPlayer);
+
+				List<Player> playerList = new List<Player>();
+
+				for (int i = 0; i < entityCount; ++i)
+				{
+					entityObject = memory.ReadMemory<int>(BaseAddress.client + Offsets.dwEntityList + i * 0x10);
+
+					Player player = new Player()
+					{
+						health = memory.ReadMemory<int>(entityObject + Offsets.m_iHealth),
+						teamId = memory.ReadMemory<int>(entityObject + Offsets.m_iTeamNum),
+						dormant = memory.ReadMemory<int>(entityObject + Offsets.m_bDormant),
+						position = memory.ReadMemory<Vector3>(entityObject + Offsets.m_vecOrigin)
+					};
+
+					if (player.IsMyTeam(player.teamId) || player.IsDead() || player.dormant == 1)
+						continue;
+
+					playerList.Add(player);
+				}
+
+				data.players = playerList.ToArray();
+
+				if (espThread == null)
+				{
+					(espThread = new Thread(Esp) { IsBackground = true }).Start();
+				}	
+
 				Thread.Sleep(10);
 			}
 		}
@@ -97,10 +135,10 @@ namespace ExternalESPCSGO
 				graphics.BeginScene();
 				graphics.Clear();
 
-				graphics.DrawLine(overlayWindow.width / 2, 0, 200, 200);
-				graphics.DrawLine(overlayWindow.width / 2, 0, 400, 400);
-				graphics.DrawLine(overlayWindow.width / 2, 0, 300, 300);
-				graphics.DrawLine(overlayWindow.width / 2, 0, 700, 700);
+				foreach (Player player in data.players)
+				{
+					graphics.DrawLine(overlayWindow.width / 2f, overlayWindow.height / 2f, player.position.x, player.position.y);
+				}	
 
 				graphics.EndScene();
 				Thread.Sleep(10);

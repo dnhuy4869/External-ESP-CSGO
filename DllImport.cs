@@ -59,6 +59,18 @@ namespace ExternalESPCSGO
 		public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
 		[DllImport("Kernel32.dll", EntryPoint = "ReadProcessMemory")]
-		public static extern bool ReadProcessMemory(IntPtr hProcess, long lpBaseAddress, byte[] lpBuffer, int dwSize, int lpNumberOfBytesRead = 0);
+		public static extern bool ReadProcessMemory(IntPtr hProcess, long lpBaseAddress, ref byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+
+		[DllImport("Kernel32.dll", EntryPoint = "VirtualProtectEx")]
+		public static extern bool VirtualProtectEx(IntPtr hProcess, long lpBaseAddress, int dwSize, uint flNewProtect, ref uint lpflOldProtect);
+
+		[DllImport("Kernel32.dll", EntryPoint = "CreateToolhelp32Snapshot")]
+		public static extern IntPtr CreateToolhelp32Snapshot(uint flags, uint processId);
+
+		[DllImport("Kernel32.dll", EntryPoint = "Module32First")]
+		public static extern bool Module32First(IntPtr hProcess, ref MODULEENTRY32 moduleEntry32);
+
+		[DllImport("Kernel32.dll", EntryPoint = "Module32Next")]
+		public static extern bool Module32Next(IntPtr hProcess, ref MODULEENTRY32 moduleEntry32);
 	}
 }

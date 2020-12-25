@@ -15,8 +15,8 @@ namespace ExternalESPCSGO
 {
 	public class Graphics
 	{
-		WindowRenderTarget device;
-		SolidColorBrush color;
+		WindowRenderTarget device = default;
+		SolidColorBrush color = default;
 
 		public Graphics(OverlayWindow overlayWindow)
 		{
@@ -58,7 +58,7 @@ namespace ExternalESPCSGO
 			device.Clear(new RawColor4(0, 0, 0, 0));
 		}
 
-		public void DrawLine(int x1, int y1, int x2, int y2)
+		public void DrawLine(float x1, float y1, float x2, float y2)
 		{
 			device.DrawLine(new RawVector2(x1, y1), new RawVector2(x2, y2), color, 1f);
 		}
