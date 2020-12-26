@@ -21,29 +21,63 @@ namespace ExternalESPCSGO
 
 		public void GetBaseAddress(string moduleName1, string moduleName2)
 		{
-			int countModule = 0;
-			IntPtr hProcess = DllImport.CreateToolhelp32Snapshot(0x00000008 | 0x00000010, (uint)gameProcess.Id);
+			//int countModule = 0;
+			//IntPtr hProcess = DllImport.CreateToolhelp32Snapshot(0x00000010, (uint)gameProcess.Id);
 
-			MODULEENTRY32 moduleEntry32 = new MODULEENTRY32();
-			moduleEntry32.dwSize = (uint)Marshal.SizeOf(moduleEntry32);
+			//MODULEENTRY32 moduleEntry32 = default;
+			//moduleEntry32.dwSize = (uint)Marshal.SizeOf(typeof(MODULEENTRY32));
 
-			if (DllImport.Module32First(hProcess, ref moduleEntry32))
+			//if (DllImport.Module32First(hProcess, ref moduleEntry32))
+			//{
+			//	while (countModule < 2)
+			//	{
+			//		if (moduleEntry32.szModule.Contains(moduleName1))
+			//		{
+			//			BaseAddress.client = (int)moduleEntry32.modBaseAddr;
+			//			countModule++;
+			//		}
+
+			//		if (moduleEntry32.szModule.Contains(moduleName2))
+			//		{
+			//			BaseAddress.engine = (int)moduleEntry32.modBaseAddr;
+			//			countModule++;
+			//		}
+
+			//		DllImport.Module32Next(hProcess, ref moduleEntry32);
+			//	}
+			//}
+
+			//IntPtr[] hModules = new IntPtr[] { };
+			//MODULEENTRY32 moduleEntry32 = default;
+			//moduleEntry32.dwSize = (uint)Marshal.SizeOf(typeof(MODULEENTRY32));
+
+			//DllImport.EnumProcessModulesEx(hProcess, hModules, 256, 256, 0x01);
+
+			//for (int i = 0; i < hModules.Length; ++i)
+			//{
+			//	moduleEntry32 = (MODULEENTRY32)(ReadMemory<MODULEENTRY32>((int)hModules[i]));
+
+			//	if (moduleEntry32.szModule == moduleName1)
+			//	{
+			//		BaseAddress.client = (int)moduleEntry32.modBaseAddr;
+			//	}
+
+			//	if (moduleEntry32.szModule == moduleName2)
+			//	{
+			//		BaseAddress.engine = (int)moduleEntry32.modBaseAddr;
+			//	}
+			//}
+
+			foreach (ProcessModule processModule in gameProcess.Modules)
 			{
-				while (countModule < 2)
+				if (processModule.ModuleName == moduleName1)
 				{
-					if (moduleEntry32.szModule.Contains(moduleName1))
-					{
-						BaseAddress.client = (int)moduleEntry32.modBaseAddr;
-						countModule++;
-					}
+					BaseAddress.client = (int)processModule.BaseAddress;
+				}
 
-					if (moduleEntry32.szModule.Contains(moduleName2))
-					{
-						BaseAddress.engine = (int)moduleEntry32.modBaseAddr;
-						countModule++;
-					}
-
-					DllImport.Module32Next(hProcess, ref moduleEntry32);
+				if (processModule.ModuleName == moduleName2)
+				{
+					BaseAddress.engine = (int)processModule.BaseAddress;
 				}
 			}
 		}
@@ -55,9 +89,9 @@ namespace ExternalESPCSGO
 		{
 			byte[] byteArray = new byte[Marshal.SizeOf(typeof(T))];
 
-			DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), 0x40, ref oldProtect);
-			DllImport.ReadProcessMemory(hProcess, lpAddress, ref byteArray, byteArray.Length, ref iNumberOfBytesRead);
-			DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), oldProtect, ref oldProtect);
+			//DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), 0x40, ref oldProtect);
+			DllImport.ReadProcessMemory(hProcess, lpAddress, byteArray, byteArray.Length, ref iNumberOfBytesRead);
+			//DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), oldProtect, ref oldProtect);
 
 			return ByteArrayToStructure<T>(byteArray);
 		}
@@ -66,9 +100,9 @@ namespace ExternalESPCSGO
 		{
 			byte[] byteArray = new byte[Marshal.SizeOf(typeof(T)) * matrixSize];
 
-			DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), 0x40, ref oldProtect);
-			DllImport.ReadProcessMemory(hProcess, lpAddress, ref byteArray, byteArray.Length, ref iNumberOfBytesRead);
-			DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), oldProtect, ref oldProtect);
+			//DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), 0x40, ref oldProtect);
+			DllImport.ReadProcessMemory(hProcess, lpAddress, byteArray, byteArray.Length, ref iNumberOfBytesRead);
+			//DllImport.VirtualProtectEx(hProcess, lpAddress, Marshal.SizeOf(typeof(T)), oldProtect, ref oldProtect);
 
 			return ConvertToFloatArray(byteArray);
 		}

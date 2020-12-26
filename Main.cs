@@ -60,6 +60,7 @@ namespace ExternalESPCSGO
 					graphics = new Graphics(overlayWindow);
 					memory = new Memory(processName);
 					data = new Data();
+					memory.GetBaseAddress(moduleName1, moduleName2);
 
 					(new Thread(QueryData) { IsBackground = true }).Start();
 
@@ -88,8 +89,6 @@ namespace ExternalESPCSGO
 
 		private void QueryData()
 		{
-			memory.GetBaseAddress(moduleName1, moduleName2);
-
 			while (true)
 			{
 				localPlayer = memory.ReadMemory<int>(BaseAddress.client + Offsets.dwLocalPlayer);

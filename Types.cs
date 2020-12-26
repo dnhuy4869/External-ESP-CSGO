@@ -71,12 +71,14 @@ namespace ExternalESPCSGO
         public UInt32 Attributes;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public struct TOKEN_PRIVILEGES
     {
         public int PrivilegeCount;
         [MarshalAs(UnmanagedType.ByValArray)] public LUID_AND_ATTRIBUTES[] Privileges;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public struct MODULEENTRY32
 	{
         public uint dwSize;

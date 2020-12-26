@@ -47,7 +47,7 @@ namespace ExternalESPCSGO
 				exStyle = 0x00000008 | 0x00000020 | 0x00080000 | 0x08000000;
 
 				DllImport.SetWindowLong(_hWnd.Handle, -20, (IntPtr)exStyle);
-				DllImport.SetLayeredWindowAttributes(_hWnd.Handle, 0, 255, 0x00000002);
+				DllImport.SetLayeredWindowAttributes(_hWnd.Handle, 0, 0, 0x00000002);
 
 				Utilities.ExtendFrameIntoClientArea(_hWnd.Handle);
 			};

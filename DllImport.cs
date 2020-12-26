@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Diagnostics;
 
 namespace ExternalESPCSGO
 {
@@ -59,7 +60,7 @@ namespace ExternalESPCSGO
 		public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
 		[DllImport("Kernel32.dll", EntryPoint = "ReadProcessMemory")]
-		public static extern bool ReadProcessMemory(IntPtr hProcess, long lpBaseAddress, ref byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+		public static extern bool ReadProcessMemory(IntPtr hProcess, long lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
 		[DllImport("Kernel32.dll", EntryPoint = "VirtualProtectEx")]
 		public static extern bool VirtualProtectEx(IntPtr hProcess, long lpBaseAddress, int dwSize, uint flNewProtect, ref uint lpflOldProtect);
@@ -72,5 +73,8 @@ namespace ExternalESPCSGO
 
 		[DllImport("Kernel32.dll", EntryPoint = "Module32Next")]
 		public static extern bool Module32Next(IntPtr hProcess, ref MODULEENTRY32 moduleEntry32);
+
+		[DllImport("Psapi.dll", EntryPoint = "EnumProcessModulesEx")]
+		public static extern int EnumProcessModulesEx(IntPtr hProcess, IntPtr[] processModules, int cb, int lpcbNeeded, uint dwFilterFlag);
 	}
 }
